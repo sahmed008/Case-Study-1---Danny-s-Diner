@@ -20,12 +20,13 @@ ORDER BY price DESC;
 
 ````sql
 SELECT 
-customer_id, SUM(DAY(order_date)) AS customer_visits
+	customer_id, COUNT(DISTINCT order_date) AS customer_visits
 FROM dannys_diner.sales
 GROUP BY customer_id;
 ````
 
-![image](https://user-images.githubusercontent.com/104872221/170370297-118b107f-552c-4a9f-8ad3-d2e4e4282c09.png)
+![image](https://user-images.githubusercontent.com/104872221/170375304-0c206419-327a-4688-b421-8a15451f4a55.png)
+
 
 
 ### 3. What was the first item from the menu purchased by each customer?
@@ -126,7 +127,7 @@ SELECT
 	s.product_id,
 	m1.join_date,
 	m2.product_name,
-	DENSE_RANK() OVER (PARTITION BY s.customer_id ORDER BY s.order_date) AS rank
+	DENSE_RANK() OVER (PARTITION BY s.customer_id ORDER BY s.order_date DESC) AS rank
 FROM dannys_diner.members AS m1
 INNER JOIN dannys_diner.sales AS s
 ON m1.customer_id = s.customer_id
@@ -144,7 +145,8 @@ WHERE rank = 1;
 ````
 
 
-![image](https://user-images.githubusercontent.com/104872221/170372244-bb236627-6a34-4a7b-b48d-36c65b3629d3.png)
+![image](https://user-images.githubusercontent.com/104872221/170375827-67bc6595-4cb9-4242-9702-0594152ab268.png)
+
 
 
 ### 8. What is the total items and amount spent for each member before they became a member?
